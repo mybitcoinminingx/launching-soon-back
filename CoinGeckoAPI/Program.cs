@@ -3,7 +3,7 @@ using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// *** НАЧАЛО ИЗМЕНЕНИЙ: ИСПРАВЛЕНИЕ CORS ***
+// *** НАЧАЛО ИЗМЕНЕНИЙ: ИСПРАВЛЕНИЕ CORS v2 ***
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 builder.Services.AddCors(options =>
@@ -11,12 +11,13 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
         policy =>
         {
-            // Получаем строку с разрешенными доменами из конфигурации
-            var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+            // Читаем origins из конфигурации как единую строку
+            var origins = builder.Configuration.GetSection("Cors:AllowedOrigins").Value;
 
-            // Если в конфигурации что-то есть, используем это
-            if (allowedOrigins != null && allowedOrigins.Length > 0)
+            // Проверяем, что строка не пустая, и делим ее по запятой
+            if (!string.IsNullOrEmpty(origins))
             {
+                var allowedOrigins = origins.Split(',', StringSplitOptions.RemoveEmptyEntries);
                 policy.WithOrigins(allowedOrigins)
                       .AllowAnyHeader()
                       .AllowAnyMethod();
