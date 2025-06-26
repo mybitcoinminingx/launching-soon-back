@@ -3,7 +3,7 @@ using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// *** НАЧАЛО ИЗМЕНЕНИЙ: ИСПРАВЛЕНИЕ CORS v2 ***
+// *** НАЧАЛО ИЗМЕНЕНИЙ: ИСПРАВЛЕНИЕ CORS v2 ***test
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 builder.Services.AddCors(options =>
